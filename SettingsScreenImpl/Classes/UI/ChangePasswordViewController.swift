@@ -57,7 +57,9 @@ class ChangePasswordViewController: UIViewController {
         viewModel.passwordChanged.sink { [weak self] _ in
             guard let self = self else { return }
             let alert = UIAlertController(title: NSLocalizedString("Change Password", comment: ""), message: NSLocalizedString("Password changed successfully", comment: ""), preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+            }))
             self.present(alert, animated: true)
         } => bag
         

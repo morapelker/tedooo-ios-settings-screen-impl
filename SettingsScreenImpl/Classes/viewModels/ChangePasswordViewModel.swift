@@ -81,9 +81,9 @@ class ChangePasswordViewModel {
         retypePasswordError.value = nil
         api.updatePassword(oldPassword: current, newPassword: newPassword).sink { [weak self] result in
             guard let self = self else { return }
-            self.loading.value = false
             switch result {
             case .finished:
+                self.loginProvider.login(with: newPassword)
                 self.passwordChanged.send(true)
                 self.newPassword.value = nil
                 self.retypePassword.value = nil
@@ -95,9 +95,9 @@ class ChangePasswordViewModel {
                     self.generalError.value = NSLocalizedString("Could not change your password, please try again later", comment: "")
                 }
             }
-        } receiveValue: { [weak self] newToken in
-            self?.loginProvider.updateAccessToken(newToken: newToken)
+        } receiveValue: { _ in
         } => bag
+
     }
     
 }

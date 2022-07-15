@@ -19,6 +19,10 @@ import TedoooRestApi
 
 class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImagePicker, AwsClient {
    
+    func login(with newPassword: String) {
+        print("login with new password", newPassword)
+    }
+    
     func launchChangeLanguage(in navController: UINavigationController) {
         print("launch change language")
     }
@@ -71,10 +75,10 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
         print("update access token to ", newToken)
     }
     
-    func updatePassword(oldPassword: String, newPassword: String) -> AnyPublisher<String, NSError> {
+    func updatePassword(oldPassword: String, newPassword: String) -> AnyPublisher<Any?, NSError> {
         print("update password", oldPassword, newPassword)
 //        return Fail(error: NSError(domain: "Invalid password", code: 1)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
-        return Just("new token").delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: NSError.self).eraseToAnyPublisher()
+        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: NSError.self).eraseToAnyPublisher()
     }
     
     func launchBlockedUsers(in navController: UINavigationController) {
