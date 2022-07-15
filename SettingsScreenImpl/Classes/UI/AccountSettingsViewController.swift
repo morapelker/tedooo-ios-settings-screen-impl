@@ -213,7 +213,7 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
             cell.imgAvatar.addGestureRecognizer(target: self, selector: #selector(editAvatar), shouldClear: true)
             cell.btnEdit.removeTarget(nil, action: nil, for: .touchUpInside)
             cell.btnEdit.addTarget(self, action: #selector(editAvatar), for: .touchUpInside)
-            loginProvider.loggedInUserSubject.combineLatest(viewModel.loadingAvatar).sink { [weak cell] (user, loading) in
+            loginProvider.loggedInUserSubject.combineLatest(viewModel.loadingAvatar).receive(on: DispatchQueue.main).sink { [weak cell] (user, loading) in
                 guard let cell = cell else { return }
                 if let loading = loading {
                     cell.imgAvatar.image = loading
@@ -244,7 +244,7 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
         case .language(let item):
             let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! SettingTextCell
             cell.lblTitle.text = NSLocalizedString("Language", comment: "")
-            item.sink { [weak cell] language in
+            item.receive(on: DispatchQueue.main).sink { [weak cell] language in
                 guard let cell = cell else { return }
                 cell.lblDescription.text = language
             } => cell.bag
@@ -252,7 +252,7 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
         case .email(let item):
             let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! SettingTextCell
             cell.lblTitle.text = NSLocalizedString("Email", comment: "")
-            item.sink { [weak cell] language in
+            item.receive(on: DispatchQueue.main).sink { [weak cell] language in
                 guard let cell = cell else { return }
                 cell.lblDescription.text = language
             } => cell.bag
