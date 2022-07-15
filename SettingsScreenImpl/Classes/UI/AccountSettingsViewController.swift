@@ -26,8 +26,12 @@ class AccountSettingsViewController: UIViewController {
     private lazy var barButton = UIBarButtonItem(customView: activityIndicator)
     private var bag = CombineBag()
     
-    static func instantiate() -> UIViewController {
-        return GPHelper.instantiateViewController(type: AccountSettingsViewController.self)
+    private var subject: PassthroughSubject<SettingsDelegate, Never>?
+    
+    static func instantiate(subject: PassthroughSubject<SettingsDelegate, Never>?) -> UIViewController {
+        let vc = GPHelper.instantiateViewController(type: AccountSettingsViewController.self)
+        vc.subject = subject
+        return vc
     }
     
     @Inject private var imagePicker: TedoooImagePicker
@@ -54,6 +58,10 @@ class AccountSettingsViewController: UIViewController {
             if didDelete {
                 let alert = UIAlertController(title: NSLocalizedString("Account closed", comment: ""), message: NSLocalizedString("Your account has been closed successfully", comment: ""), preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .cancel, handler: { _ in
+                    if let subject = self.subject {
+                        subject.send(.logout)
+                        subject.send(completion: .finished)
+                    }
                     self.navigationController?.popToRootViewController(animated: true)
                 }))
                 self.present(alert, animated: true)

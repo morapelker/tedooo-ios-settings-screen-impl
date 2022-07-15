@@ -109,7 +109,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             case .howToUse:
                 legacyScreens.launchHowToUse(in: navController)
             case .accountSettings:
-                navController.pushViewController(AccountSettingsViewController.instantiate(), animated: true)
+                navController.pushViewController(AccountSettingsViewController.instantiate(subject: self.subject), animated: true)
             case .blockedUsers:
                 legacyScreens.launchBlockedUsers(in: navController)
             case .changePassword:
