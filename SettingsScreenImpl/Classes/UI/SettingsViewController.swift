@@ -40,8 +40,12 @@ class SettingsViewController: UIViewController {
     @Inject private var loginProvider: LoginProvider
     @Inject private var legacyScreens: SettingsLegacyScreens
     
-    static func instantiate() -> UIViewController {
-        return GPHelper.instantiateViewController(type: SettingsViewController.self)
+    private var subject: PassthroughSubject<SettingsDelegate, Never>?
+    
+    static func instantiate(_ delegate: PassthroughSubject<SettingsDelegate, Never>) -> UIViewController {
+        let vc = GPHelper.instantiateViewController(type: SettingsViewController.self)
+        vc.subject = delegate
+        return vc
     }
 
     private var items: [SettingRow] = [
@@ -116,7 +120,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             case .signOut:
                 let alert = UIAlertController(title: NSLocalizedString("Sign out", comment: ""), message: NSLocalizedString("Are you sure you want to sign out?", comment: ""), preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Sign out", comment: ""), style: .destructive, handler: { _ in
-                    self.loginProvider.logout()
+                    if let subject = self.subject {
+                        subject.send(.logout)
+                        subject.send(completion: .finished)
+                    }
                     self.navigationController?.popViewController(animated: true)
                 }))
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))

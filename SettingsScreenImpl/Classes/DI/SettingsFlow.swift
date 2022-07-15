@@ -19,9 +19,11 @@ public class SettingsFlow {
         DIContainer.shared.registerContainer(container: container)
     }
     
-    public func launch(in navController: UINavigationController) {
-        let vc = SettingsViewController.instantiate()
+    public func launch(in navController: UINavigationController) -> AnyPublisher<SettingsDelegate, Never> {
+        let subject = PassthroughSubject<SettingsDelegate, Never>()
+        let vc = SettingsViewController.instantiate(subject)
         navController.pushViewController(vc, animated: true)
+        return subject.eraseToAnyPublisher()
     }
     
 }

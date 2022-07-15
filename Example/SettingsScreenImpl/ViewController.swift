@@ -50,9 +50,6 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
         return Just(UIImage(systemName: "square")!).eraseToAnyPublisher()
     }
     
-    
-    
-    
     func fetchAccountSettings() -> AnyPublisher<AccountSettings, Error> {
         return Just(AccountSettings(lastSeen: true, localTime: false, liveTranslations: true, language: "English", email: "morapelker@gmail.com")).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
@@ -62,10 +59,6 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
         print("updataeUser", loggedInUser)
     }
     
-    func logout() {
-        loggedInUserSubject.value = nil
-        print("logout")
-    }
     
     func updateAccessToken(newToken: String) {
         if let current = loggedInUserSubject.value {
@@ -112,12 +105,6 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
 //        return
     }
     
-//
-//    func deleteAccount() -> AnyPublisher<Any?, Never> {
-//
-////        return Just(nil).delay(for: 2.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
-//    }
-    
     func fetchNotificationSettings() -> AnyPublisher<NotificationSettings, Error> {
         return Just(NotificationSettings(postNotifications: false)).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
@@ -157,7 +144,9 @@ class ViewController: UIViewController {
     }
 
     @IBAction func startFlow(_ sender: Any) {
-        SettingsFlow(container: container).launch(in: navigationController!)
+        SettingsFlow(container: container).launch(in: navigationController!).sink { [weak self] delegate in
+            print("execute logout")
+        } => bag
     }
     
 }
