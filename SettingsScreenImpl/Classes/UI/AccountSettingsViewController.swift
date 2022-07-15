@@ -103,7 +103,8 @@ class AccountSettingsViewController: UIViewController {
 extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     private func uploadNewAvatar() {
-        self.imagePicker.pickImages(from: self, single: true, withCamera: true, edit: true).sink { [weak self] image in
+        guard let presentor = self.navigationController?.tabBarController ?? self.navigationController else { return }
+        self.imagePicker.pickImages(from: presentor, single: true, withCamera: true, edit: true).sink { [weak self] image in
             if let first = image.first {
                 self?.viewModel.uploadAvatar(image: first)
             }
