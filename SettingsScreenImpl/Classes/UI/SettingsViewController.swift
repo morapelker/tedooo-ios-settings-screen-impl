@@ -152,7 +152,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
                     } else {
                         cell.imgAvatar.image = UIImage(named: "profile_placeholder")
                     }
-                    cell.lblName.text = user.name
+                    cell.lblName.text = user.name.capitalized
                 } else {
                     cell.lblName.text = ""
                     cell.imgAvatar.image = nil
