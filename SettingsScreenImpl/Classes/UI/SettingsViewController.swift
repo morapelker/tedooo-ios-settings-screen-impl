@@ -57,6 +57,10 @@ class SettingsViewController: UIViewController {
         .smallItem(.privacy),
         .smallItem(.signOut)
     ]
+    
+    @IBAction func backClicked() {
+        navigationController?.popViewController(animated: true)
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 

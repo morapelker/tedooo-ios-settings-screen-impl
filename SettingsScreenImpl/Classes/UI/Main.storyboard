@@ -27,7 +27,14 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </textAttributes>
                                         <items>
-                                            <navigationItem title="Settings" id="QIl-oB-uvA"/>
+                                            <navigationItem title="Settings" id="QIl-oB-uvA">
+                                                <barButtonItem key="leftBarButtonItem" image="chevron.left" catalog="system" id="AVF-pA-GyS">
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <action selector="backClicked" destination="Y6W-OH-hqX" id="60n-AP-A4C"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </navigationItem>
                                         </items>
                                     </navigationBar>
                                 </subviews>
