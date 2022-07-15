@@ -69,7 +69,7 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     
     func updateAccessToken(newToken: String) {
         if let current = loggedInUserSubject.value {
-            loggedInUserSubject.value = LoggedInUser(id: current.id, name: current.name, fullName: current.fullName, avatar: current.avatar, token: newToken)
+            loggedInUserSubject.value = LoggedInUser(id: current.id, name: current.name, avatar: current.avatar, token: newToken)
         }
         print("update access token to ", newToken)
     }
@@ -104,7 +104,7 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     static let shared = Implementor()
     
     var subUntilSubject: CurrentValueSubject<Int64, Never> = CurrentValueSubject(0)
-    var loggedInUserSubject: CurrentValueSubject<LoggedInUser?, Never> = CurrentValueSubject(LoggedInUser(id: "id", name: "morapelker", fullName: "Mor Apelker", avatar: nil, token: "token"))
+    var loggedInUserSubject: CurrentValueSubject<LoggedInUser?, Never> = CurrentValueSubject(LoggedInUser(id: "id", name: "morapelker", avatar: nil, token: "token"))
     
     func deleteAccount() -> AnyPublisher<DeleteAccountResult?, Never> {
         return Just(DeleteAccountResult(didDelete: false)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
