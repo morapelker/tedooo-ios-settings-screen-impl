@@ -18,13 +18,14 @@ import TedoooImagePicker
 import TedoooRestApi
 
 class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImagePicker, AwsClient {
+    func launchChangeLanguage(in navController: UINavigationController) -> AnyPublisher<Any?, Error> {
+        print("launch change language")
+        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
+    
    
     func login(with newPassword: String) {
         print("login with new password", newPassword)
-    }
-    
-    func launchChangeLanguage(in navController: UINavigationController) {
-        print("launch change language")
     }
     
     func launchEula() {

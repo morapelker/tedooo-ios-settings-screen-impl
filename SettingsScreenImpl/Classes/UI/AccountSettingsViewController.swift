@@ -173,7 +173,17 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
             }
         case 4:
             if let navController = navigationController {
-                legacySettings.launchChangeLanguage(in: navController)
+                legacySettings.launchChangeLanguage(in: navController).sink { [weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .finished: break
+                    case .failure:
+                        let alert = UIAlertController(title: NSLocalizedString("Change Language", comment: ""), message: NSLocalizedString("There was a problem changing your language, please try again later", comment: ""), preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default))
+                        self.present(alert, animated: true)
+                    }
+                } receiveValue: { _ in
+                } => bag
             }
         case 5:
             if case AccountSettingsViewModel.AccountSettingItem.email(let item) = viewModel.items[5] {
