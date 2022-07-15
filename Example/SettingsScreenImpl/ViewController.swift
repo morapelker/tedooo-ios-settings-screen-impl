@@ -55,7 +55,7 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     }
     
     func fetchAccountSettings() -> AnyPublisher<AccountSettings, Error> {
-        return Just(AccountSettings(lastSeen: true, localTime: false, liveTranslations: true, language: "English", email: "morapelker@gmail.com")).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(AccountSettings(lastSeen: true, localTime: false, liveTranslations: true, language: "en", email: "morapelker@gmail.com")).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     func updateUser(loggedInUser: LoggedInUser) {

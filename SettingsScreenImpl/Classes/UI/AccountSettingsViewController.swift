@@ -206,6 +206,25 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
         
     }
     
+    private static let languageMap: [String: String] = [
+        "en": "English",
+        "zh-Hans": "Chinese - 中文",
+        "ar": "Arabic",
+        "si": "Sinhala",
+        "th": "Thai",
+        "ko": "Korean",
+        "es": "Spanish",
+        "hi": "Hindi",
+        "id": "Indonesian",
+        "sw": "Swahili",
+        "tr": "Turkish",
+        "ja": "Japanese",
+        "ur": "Urdu",
+        "vi": "Vietnamese",
+        "it": "Italian",
+        "pt-br": "Brazilian Portuguese"
+    ]
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewModel.items[indexPath.row] {
         case .header:
@@ -246,7 +265,7 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
             cell.lblTitle.text = NSLocalizedString("Language", comment: "")
             item.receive(on: DispatchQueue.main).sink { [weak cell] language in
                 guard let cell = cell else { return }
-                cell.lblDescription.text = language
+                cell.lblDescription.text = AccountSettingsViewController.languageMap[language] ?? language
             } => cell.bag
             return cell
         case .email(let item):
