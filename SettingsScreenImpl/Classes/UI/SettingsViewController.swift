@@ -144,7 +144,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case .header:
             let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! SettingHeaderCell
             cell.selectionStyle = .none
-            loginProvider.loggedInUserSubject.sink { [weak cell] user in
+            loginProvider.loggedInUserSubject.receive(on: DispatchQueue.main).sink { [weak cell] user in
                 guard let cell = cell else { return }
                 if let user = user {
                     if let url = user.avatar, let url = URL(string: url) {
