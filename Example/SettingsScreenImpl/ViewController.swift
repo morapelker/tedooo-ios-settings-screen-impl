@@ -23,6 +23,10 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
         print("launch change language")
     }
     
+    func launchEula() {
+        print("launch eula")
+    }
+    
     func updateAvatar(avatar: String?) -> AnyPublisher<Any?, Error> {
         print("update avatar", avatar)
         return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
@@ -89,8 +93,8 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
         print("launch contact us in", navController)
     }
     
-    func launchPrivacyPolicy(in navController: UINavigationController) {
-        print("launch privacy policy in", navController)
+    func launchPrivacyPolicy() {
+        print("launch privacy policy in")
     }
     
     

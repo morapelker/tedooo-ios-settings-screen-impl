@@ -27,6 +27,7 @@ class SettingsViewController: UIViewController {
     
     enum SmallSettingItem {
         case privacy
+        case eula
         case signOut
     }
     
@@ -59,6 +60,7 @@ class SettingsViewController: UIViewController {
         .bigItem(.contactUs),
         .spacer,
         .smallItem(.privacy),
+        .smallItem(.eula),
         .smallItem(.signOut)
     ]
     
@@ -116,7 +118,9 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case .smallItem(let item):
             switch item {
             case .privacy:
-                legacyScreens.launchPrivacyPolicy(in: navController)
+                legacyScreens.launchPrivacyPolicy()
+            case .eula:
+                legacyScreens.launchEula()
             case .signOut:
                 let alert = UIAlertController(title: NSLocalizedString("Sign out", comment: ""), message: NSLocalizedString("Are you sure you want to sign out?", comment: ""), preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Sign out", comment: ""), style: .destructive, handler: { _ in
@@ -183,6 +187,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             switch settingItem {
             case .privacy:
                 cell.lblSettingText.text = NSLocalizedString("Privacy policy", comment: "")
+            case .eula:
+                cell.lblSettingText.text = NSLocalizedString("End user license agreement", comment: "")
             case .signOut:
                 cell.lblSettingText.text = NSLocalizedString("Sign out", comment: "")
             }
