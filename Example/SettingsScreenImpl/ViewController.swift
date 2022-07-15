@@ -7,18 +7,158 @@
 //
 
 import UIKit
+import SettingsScreenImpl
+import Swinject
+import SettingsApi
+import TedoooCombine
+import Combine
+import LoginProviderApi
+import SettingsLegacyScreens
+import TedoooImagePicker
+import TedoooRestApi
+
+class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImagePicker, AwsClient {
+   
+    func launchChangeLanguage(in navController: UINavigationController) {
+        print("launch change language")
+    }
+    
+    func updateAvatar(avatar: String?) -> AnyPublisher<Any?, Error> {
+        print("update avatar", avatar)
+        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
+    
+    func updateEmail(toEmail: String) -> AnyPublisher<Any?, Error> {
+        print("update email", toEmail)
+        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
+    
+    
+    func uploadImage(request: UploadImageRequest) -> AnyPublisher<UploadImageResponse, Never> {
+        return Just(
+            UploadImageResponse(
+                id: request.id, result:
+                    UploadImageResult.success("https://i.pravatar.cc/100?a=\(UUID().uuidString)"))
+        ).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+    }
+    
+    func pickImages(from: UIViewController, single: Bool, withCamera: Bool, edit: Bool) -> AnyPublisher<[UIImage], Never> {
+        return Just([UIImage(systemName: "xmark")!]).eraseToAnyPublisher()
+    }
+    
+    func editImage(from: UIViewController, image: UIImage) -> AnyPublisher<UIImage, Never> {
+        return Just(UIImage(systemName: "square")!).eraseToAnyPublisher()
+    }
+    
+    
+    
+    
+    func fetchAccountSettings() -> AnyPublisher<AccountSettings, Error> {
+        return Just(AccountSettings(lastSeen: true, localTime: false, liveTranslations: true, language: "English", email: "morapelker@gmail.com")).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
+    
+    func updateUser(loggedInUser: LoggedInUser) {
+        loggedInUserSubject.value = loggedInUser
+        print("updataeUser", loggedInUser)
+    }
+    
+    func logout() {
+        loggedInUserSubject.value = nil
+        print("logout")
+    }
+    
+    func updateAccessToken(newToken: String) {
+        if let current = loggedInUserSubject.value {
+            loggedInUserSubject.value = LoggedInUser(id: current.id, name: current.name, fullName: current.fullName, avatar: current.avatar, token: newToken)
+        }
+        print("update access token to ", newToken)
+    }
+    
+    func updatePassword(oldPassword: String, newPassword: String) -> AnyPublisher<String, NSError> {
+        print("update password", oldPassword, newPassword)
+//        return Fail(error: NSError(domain: "Invalid password", code: 1)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+        return Just("new token").delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: NSError.self).eraseToAnyPublisher()
+    }
+    
+    func launchBlockedUsers(in navController: UINavigationController) {
+        print("launch blocked users in", navController)
+    }
+    
+    func launchHowToUse(in navController: UINavigationController) {
+        print("launch how to use in", navController)
+    }
+    
+    func launchInvite(in navController: UINavigationController) {
+        print("launch invite friends in", navController)
+    }
+    
+    func launchContactUs(in navController: UINavigationController) {
+        print("launch contact us in", navController)
+    }
+    
+    func launchPrivacyPolicy(in navController: UINavigationController) {
+        print("launch privacy policy in", navController)
+    }
+    
+    
+    static let shared = Implementor()
+    
+    var subUntilSubject: CurrentValueSubject<Int64, Never> = CurrentValueSubject(0)
+    var loggedInUserSubject: CurrentValueSubject<LoggedInUser?, Never> = CurrentValueSubject(LoggedInUser(id: "id", name: "morapelker", fullName: "Mor Apelker", avatar: nil, token: "token"))
+    
+    func deleteAccount() -> AnyPublisher<DeleteAccountResult?, Never> {
+        return Just(DeleteAccountResult(didDelete: false)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+//        return Just(DeleteAccountResult(didDelete: true)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+//        return
+    }
+    
+//
+//    func deleteAccount() -> AnyPublisher<Any?, Never> {
+//
+////        return Just(nil).delay(for: 2.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+//    }
+    
+    func fetchNotificationSettings() -> AnyPublisher<NotificationSettings, Error> {
+        return Just(NotificationSettings(postNotifications: false)).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
+    
+    func updateSettingItem(item: SettingItem, newValue: Bool) -> AnyPublisher<Any?, Error> {
+        print("update settings item", item, newValue)
+//        return Fail(error: NSError(domain: "", code: 1)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
+    
+    
+    
+}
 
 class ViewController: UIViewController {
 
+    private let container = Container()
+    private var bag = CombineBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        container.register(LoginProvider.self) { _ in
+            return Implementor.shared
+        }.inObjectScope(.container)
+        container.register(SettingsApi.self) { _ in
+            return Implementor.shared
+        }.inObjectScope(.container)
+        container.register(SettingsLegacyScreens.self) { _ in
+            return Implementor.shared
+        }.inObjectScope(.container)
+        container.register(TedoooImagePicker.self) { _ in
+            return Implementor.shared
+        }.inObjectScope(.container)
+        container.register(AwsClient.self) { _ in
+            return Implementor.shared
+        }.inObjectScope(.container)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func startFlow(_ sender: Any) {
+        SettingsFlow(container: container).launch(in: navigationController!)
     }
-
+    
 }
 
