@@ -77,8 +77,8 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     
     func updatePassword(oldPassword: String, newPassword: String) -> AnyPublisher<Any?, NSError> {
         print("update password", oldPassword, newPassword)
-//        return Fail(error: NSError(domain: "Invalid password", code: 1)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
-        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: NSError.self).eraseToAnyPublisher()
+        return Fail(error: NSError(domain: "Invalid password", code: 1)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+//        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: NSError.self).eraseToAnyPublisher()
     }
     
     func launchBlockedUsers(in navController: UINavigationController) {

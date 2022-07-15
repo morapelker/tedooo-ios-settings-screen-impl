@@ -81,6 +81,7 @@ class ChangePasswordViewModel {
         retypePasswordError.value = nil
         api.updatePassword(oldPassword: current, newPassword: newPassword).sink { [weak self] result in
             guard let self = self else { return }
+            self.loading.value = false
             switch result {
             case .finished:
                 self.loginProvider.login(with: newPassword)
