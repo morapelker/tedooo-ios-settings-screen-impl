@@ -76,7 +76,7 @@ class AccountSettingsViewModel {
             self.loadingAvatar.value = nil
             switch result {
             case .finished:
-                self.loginProvider.updateUser(loggedInUser: LoggedInUser(id: currentUser.id, name: currentUser.name, avatar: nil, token: currentUser.token))
+                self.loginProvider.updateUser(loggedInUser: LoggedInUser(id: currentUser.id, name: currentUser.name, avatar: nil, token: currentUser.token, thirdParty: currentUser.thirdParty))
             case .failure:
                 self.errorChanging.send(NSLocalizedString("Could not update avatar, please try again later", comment: ""))
             }
@@ -103,7 +103,7 @@ class AccountSettingsViewModel {
                     self.loadingAvatar.value = nil
                     switch result {
                     case .finished:
-                        self.loginProvider.updateUser(loggedInUser: LoggedInUser(id: currentUser.id, name: currentUser.name, avatar: url, token: currentUser.token))
+                        self.loginProvider.updateUser(loggedInUser: LoggedInUser(id: currentUser.id, name: currentUser.name, avatar: url, token: currentUser.token, thirdParty: currentUser.thirdParty))
                     case .failure:
                         self.errorChanging.send(NSLocalizedString("Could not update avatar, please try again later", comment: ""))
                     }

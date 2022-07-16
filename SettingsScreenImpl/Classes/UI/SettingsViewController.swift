@@ -113,7 +113,12 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             case .blockedUsers:
                 legacyScreens.launchBlockedUsers(in: navController)
             case .changePassword:
-                navController.pushViewController(ChangePasswordViewController.instantiate(), animated: true)
+                if let tp = loginProvider.loggedInUserSubject.value?.thirdParty, tp != .tedooo {
+                    navController.pushViewController(CannotChangePasswordViewController.instantiate(thirdParty: tp), animated: true)
+                } else {
+                    navController.pushViewController(ChangePasswordViewController.instantiate(), animated: true)
+                }
+                
             }
         case .smallItem(let item):
             switch item {

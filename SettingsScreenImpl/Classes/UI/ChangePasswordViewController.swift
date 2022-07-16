@@ -45,6 +45,10 @@ class ChangePasswordViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         
         Styling.styleJoyButton(view: btnChange)
+     
+        txtCurrentPassword.delegate = self
+        txtNewPassword.delegate = self
+        txtRetypePassword.delegate = self
         
         subscribe()
     }
@@ -106,6 +110,22 @@ class ChangePasswordViewController: UIViewController {
             }
             
         } => bag
+    }
+    
+}
+
+extension ChangePasswordViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case txtCurrentPassword:
+            txtNewPassword.becomeFirstResponder()
+        case txtNewPassword:
+            txtRetypePassword.becomeFirstResponder()
+        default:
+            textField.resignFirstResponder()
+        }
+        return false
     }
     
 }

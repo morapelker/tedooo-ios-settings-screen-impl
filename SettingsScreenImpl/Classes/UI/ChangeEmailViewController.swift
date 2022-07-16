@@ -32,6 +32,7 @@ class ChangeEmailViewController: UIViewController {
         
         Styling.styleJoyButton(view: btnSubmit)
         txtEmail.text = viewModel.email.value
+        txtEmail.delegate = self
         
         subscribe()
     }
@@ -71,6 +72,15 @@ class ChangeEmailViewController: UIViewController {
     
     @IBAction func backClicked() {
         navigationController?.popViewController(animated: true)
+    }
+    
+}
+
+extension ChangeEmailViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
     }
     
 }
