@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SettingsScreenImpl'
-  s.version          = '1.1.0'
+  s.version          = '1.1.1'
   s.summary          = 'SettingsScreenImpl'
 
 # This description is used to generate tags and improve search results.
@@ -32,9 +32,10 @@ SettingsScreenImpl
 
   s.source_files = 'SettingsScreenImpl/Classes/**/*'
   s.swift_version = '5.0'
-  # s.resource_bundles = {
-  #   'SettingsScreenImpl' => ['SettingsScreenImpl/Assets/*.png']
-  # }
+  s.resources = ['SettingsScreenImpl/Assets/*.{xcassets}']
+   s.resource_bundles = {
+     'SettingsScreenImpl' => ['SettingsScreenImpl/Assets/*']
+   }
 
   s.dependency 'Swinject'
   s.dependency 'TedoooCombine'
