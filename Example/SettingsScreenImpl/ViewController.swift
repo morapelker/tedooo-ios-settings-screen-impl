@@ -20,7 +20,7 @@ import TedoooRestApi
 class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImagePicker, AwsClient {
     func launchChangeLanguage(in navController: UINavigationController) -> AnyPublisher<Any?, Error> {
         print("launch change language")
-        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(nil).delay(for: 0.5, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
    
@@ -34,12 +34,12 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     
     func updateAvatar(avatar: String?) -> AnyPublisher<Any?, Error> {
         print("update avatar", avatar)
-        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(nil).delay(for: 0.5, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     func updateEmail(toEmail: String) -> AnyPublisher<Any?, Error> {
         print("update email", toEmail)
-        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(nil).delay(for: 0.5, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     
@@ -60,7 +60,7 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     }
     
     func fetchAccountSettings() -> AnyPublisher<AccountSettings, Error> {
-        return Just(AccountSettings(lastSeen: true, localTime: false, liveTranslations: true, language: "en", email: "morapelker@gmail.com")).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(AccountSettings(lastSeen: true, localTime: false, liveTranslations: true, language: "en", email: "morapelker@gmail.com")).delay(for: 0.5, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     func updateUser(loggedInUser: LoggedInUser) {
@@ -78,7 +78,7 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     
     func updatePassword(oldPassword: String, newPassword: String) -> AnyPublisher<Any?, NSError> {
         print("update password", oldPassword, newPassword)
-        return Fail(error: NSError(domain: "Invalid password", code: 1)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+        return Fail(error: NSError(domain: "Invalid password", code: 1)).delay(for: 0.5, scheduler: DispatchQueue.main).eraseToAnyPublisher()
 //        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: NSError.self).eraseToAnyPublisher()
     }
     
@@ -109,19 +109,19 @@ class Implementor: LoginProvider, SettingsApi, SettingsLegacyScreens, TedoooImag
     var loggedInUserSubject: CurrentValueSubject<LoggedInUser?, Never> = CurrentValueSubject(LoggedInUser(id: "id", name: "morapelker", avatar: nil, token: "token", thirdParty: .tedooo))
     
     func deleteAccount() -> AnyPublisher<DeleteAccountResult?, Never> {
-        return Just(DeleteAccountResult(didDelete: false)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
+        return Just(DeleteAccountResult(didDelete: false)).delay(for: 0.5, scheduler: DispatchQueue.main).eraseToAnyPublisher()
 //        return Just(DeleteAccountResult(didDelete: true)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
 //        return
     }
     
     func fetchNotificationSettings() -> AnyPublisher<NotificationSettings, Error> {
-        return Just(NotificationSettings(postNotifications: false)).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(NotificationSettings(postNotifications: false)).delay(for: 0.5, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     func updateSettingItem(item: SettingItem, newValue: Bool) -> AnyPublisher<Any?, Error> {
         print("update settings item", item, newValue)
 //        return Fail(error: NSError(domain: "", code: 1)).delay(for: 1.0, scheduler: DispatchQueue.main).eraseToAnyPublisher()
-        return Just(nil).delay(for: 1.0, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(nil).delay(for: 0.5, scheduler: DispatchQueue.main).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     

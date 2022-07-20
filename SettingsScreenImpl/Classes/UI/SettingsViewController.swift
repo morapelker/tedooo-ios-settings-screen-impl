@@ -83,11 +83,11 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case .header:
             return 70
         case .smallItem:
-            return 30
+            return 35
         case .spacer:
             return 30
         case .bigItem:
-            return 50
+            return 65
         }
     }
     
@@ -168,23 +168,37 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case .bigItem(let settingItem):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingItemCell", for: indexPath) as! SettingItemCell
             cell.selectionStyle = .none
+            cell.viewSeparator.isHidden = settingItem != .contactUs
             switch settingItem {
             case .notificationSettings:
                 cell.lblSettingText.text = NSLocalizedString("Notification settings", comment: "")
+                cell.lblSettingDescription?.text = NSLocalizedString("Your push notification settings", comment: "")
+                cell.imgSetting?.image = UIImage(named: "bell", in: Bundle(for: SettingsViewController.self), with: nil)
             case .accountSettings:
                 cell.lblSettingText.text = NSLocalizedString("Account settings", comment: "")
+                cell.lblSettingDescription?.text = NSLocalizedString("Manage your account preferences", comment: "")
+                cell.imgSetting?.image = UIImage(named: "sign_in", in: Bundle(for: SettingsViewController.self), with: nil)
             case .blockedUsers:
                 cell.lblSettingText.text = NSLocalizedString("Blocked users", comment: "")
+                cell.lblSettingDescription?.text = NSLocalizedString("View/edit your blocked users list", comment: "")
+                cell.imgSetting?.image = UIImage(named: "block", in: Bundle(for: SettingsViewController.self), with: nil)
             case .howToUse:
                 cell.lblSettingText.text = NSLocalizedString("How to use", comment: "")
+                cell.lblSettingDescription?.text = NSLocalizedString("Visit the how to use guide", comment: "")
+                cell.imgSetting?.image = UIImage(named: "how_to_use", in: Bundle(for: SettingsViewController.self), with: nil)
             case .inviteFriends:
                 cell.lblSettingText.text = NSLocalizedString("Invite friends", comment: "")
+                cell.lblSettingDescription?.text = NSLocalizedString("A full guide on how to use the Tedooo app", comment: "")
+                cell.imgSetting?.image = UIImage(named: "invitation", in: Bundle(for: SettingsViewController.self), with: nil)
             case .contactUs:
                 cell.lblSettingText.text = NSLocalizedString("Contact us", comment: "")
+                cell.lblSettingDescription?.text = NSLocalizedString("For questions and issues, contact our team", comment: "")
+                cell.imgSetting?.image = UIImage(named: "contact_us", in: Bundle(for: SettingsViewController.self), with: nil)
             case .changePassword:
                 cell.lblSettingText.text = NSLocalizedString("Change Password", comment: "")
+                cell.lblSettingDescription?.text = NSLocalizedString("Change your sign in password", comment: "")
+                cell.imgSetting?.image = UIImage(named: "lock", in: Bundle(for: SettingsViewController.self), with: nil)
             }
-          
             return cell
         case .smallItem(let settingItem):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmallSettingsItemCell", for: indexPath) as! SettingItemCell

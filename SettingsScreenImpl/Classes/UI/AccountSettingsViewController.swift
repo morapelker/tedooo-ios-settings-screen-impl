@@ -141,13 +141,13 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
         case .header:
             return 150
         case .spacer:
-            return 30
-        case .language, .email:
+            return 20
+        case .language, .email, .contact:
             return 60
         case .bool:
-            return 50
-        case .contact, .delete:
-            return 30
+            return 80
+        case .delete:
+            return 35
         }
     }
     
@@ -245,14 +245,15 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
     ]
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch viewModel.items[indexPath.row] {
+        let item = viewModel.items[indexPath.row]
+        switch item {
         case .header:
             let cell = tableView.dequeueReusableCell(withIdentifier: "header", for: indexPath) as! AccountHeaderCell
             cell.imgAvatar.addGestureRecognizer(target: self, selector: #selector(editAvatar), shouldClear: true)
-            cell.btnEdit.removeTarget(nil, action: nil, for: .touchUpInside)
-            cell.btnEdit.addTarget(self, action: #selector(editAvatar), for: .touchUpInside)
+            cell.btnEdit.addGestureRecognizer(target: self, selector: #selector(editAvatar), shouldClear: true)
             loginProvider.loggedInUserSubject.combineLatest(viewModel.loadingAvatar).receive(on: DispatchQueue.main).sink { [weak cell] (user, loading) in
                 guard let cell = cell else { return }
+                cell.lblName.text = user?.name.capitalized ?? ""
                 if let loading = loading {
                     cell.imgAvatar.image = loading
                     cell.loaderAvatar.startAnimating()
@@ -271,6 +272,8 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
         case .bool(let item):
             let cell = tableView.dequeueReusableCell(withIdentifier: "bool", for: indexPath) as! SettingBooleanCell
             cell.label.text = item.name
+            cell.lblDescription.text = item.tableDescription
+            cell.imgSetting.image = UIImage(named: item.icon, in: Bundle(for: AccountSettingsViewController.self), with: nil)
             cell.mainSwitch.removeTarget(nil, action: nil, for: .valueChanged)
             cell.mainSwitch.tag = indexPath.row
             cell.mainSwitch.addTarget(self, action: #selector(mainSwitchValueChanged(sender:)), for: .valueChanged)
@@ -281,7 +284,9 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
             return cell
         case .language(let item):
             let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! SettingTextCell
+            cell.viewSeparator.isHidden = true
             cell.lblTitle.text = NSLocalizedString("Language", comment: "")
+            cell.imgSetting.image = UIImage(systemName: "globe")
             item.receive(on: DispatchQueue.main).sink { [weak cell] language in
                 guard let cell = cell else { return }
                 cell.lblDescription.text = AccountSettingsViewController.languageMap[language] ?? language
@@ -289,7 +294,9 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
             return cell
         case .email(let item):
             let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! SettingTextCell
+            cell.viewSeparator.isHidden = true
             cell.lblTitle.text = NSLocalizedString("Email", comment: "")
+            cell.imgSetting.image = UIImage(named: "email", in: Bundle(for: AccountSettingsViewController.self), with: nil)
             item.receive(on: DispatchQueue.main).sink { [weak cell] language in
                 guard let cell = cell else { return }
                 cell.lblDescription.text = language
@@ -298,8 +305,11 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
         case .spacer:
             return tableView.dequeueReusableCell(withIdentifier: "SpacerCell", for: indexPath)
         case .contact:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SmallSettingsItemCell", for: indexPath) as! SettingItemCell
-            cell.lblSettingText.text = NSLocalizedString("Contact us", comment: "")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! SettingTextCell
+            cell.viewSeparator.isHidden = false
+            cell.lblTitle.text = NSLocalizedString("Contact us", comment: "")
+            cell.lblDescription.text = NSLocalizedString("For questions and issues contact our team", comment: "")
+            cell.imgSetting.image = UIImage(named: "contact_us", in: Bundle(for: AccountSettingsViewController.self), with: nil)
             return cell
         case .delete:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmallSettingsItemCell", for: indexPath) as! SettingItemCell

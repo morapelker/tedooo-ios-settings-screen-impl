@@ -13,7 +13,9 @@ import TedoooRestApi
 import LoginProviderApi
 
 struct AccountBoolItem {
+    let icon: String
     let name: String
+    let tableDescription: String
     let on: CurrentValueSubject<SwitchOnStatus, Never> = CurrentValueSubject(.off)
 }
 
@@ -44,13 +46,25 @@ class AccountSettingsViewModel {
     
     let items: [AccountSettingItem] = [
         .header,
-        .bool(.init(name: NSLocalizedString("Show my last seen", comment: ""))),
-        .bool(.init(name: NSLocalizedString("Show my local time", comment: ""))),
-        .bool(.init(name: NSLocalizedString("Live translation", comment: ""))),
+        .bool(.init(
+            icon: "last_seen",
+            name: NSLocalizedString("Show my last seen", comment: ""),
+            tableDescription: NSLocalizedString("If you dont share your Last Seen, you wont be able to see other people's Last Seen", comment: "")
+        )),
+        .bool(.init(
+            icon: "local_time",
+            name: NSLocalizedString("Show my local time", comment: ""),
+            tableDescription: NSLocalizedString("If you dont share your Local Time, you wont be able to see other people's Local Time", comment: "")
+        )),
+        .bool(.init(
+            icon: "live_translation",
+            name: NSLocalizedString("Live translation", comment: ""),
+            tableDescription: NSLocalizedString("Automatically translate chat messages from other languages in private chats", comment: "")
+        )),
         .language(CurrentValueSubject("")),
         .email(CurrentValueSubject("")),
-        .spacer,
         .contact,
+        .spacer,
         .delete
     ]
     

@@ -32,7 +32,8 @@ class AccountHeaderCell: UITableViewCell {
     
     @IBOutlet weak var loaderAvatar: UIActivityIndicatorView!
     @IBOutlet weak var imgAvatar: UIImageView!
-    @IBOutlet weak var btnEdit: UIButton!
+    @IBOutlet weak var btnEdit: UILabel!
+    @IBOutlet weak var lblName: UILabel!
     
     var bag = CombineBag()
     
